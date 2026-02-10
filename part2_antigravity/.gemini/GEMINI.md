@@ -1,45 +1,40 @@
-# ML Project - Antigravity Rules
+# Wine Classification Project – Antigravity Rules
 
 ## Project Overview
-This project performs exploratory data analysis and builds an XGBoost model using scikit-learn datasets.
+This project builds a complete machine learning pipeline to classify wines into
+three classes using the UCI Wine dataset (`sklearn.datasets.load_wine()`).
 
-## Coding Standards
+The workflow includes exploratory data analysis, feature engineering,
+multi-class classification with XGBoost, and model evaluation.
 
-### Language and Tools
-- Use Python 3.11+
-- Use `uv` for package management (never pip)
-- Use `polars` for data manipulation (not pandas)
-- Use `ruff` for linting and formatting
-- Use `pytest` for testing
+## Dataset
+- Source: `sklearn.datasets.load_wine()`
+- Samples: 178
+- Features: 13 numeric chemical measurements
+- Target: 3 wine classes
+- Task type: Multi-class classification
 
-### Code Style
-- Use type annotations for all function parameters (one parameter per line)
-- All private functions must start with underscore (`_`) and be placed at the top of the file
-- Public functions follow after private functions
-- Functions should be no more than 30-50 lines
-- Two blank lines between function definitions
-- Use multi-line imports
+## Core Rules
+- Treat this strictly as a **classification** problem (not regression)
+- Always use **stratified** train/test splits
+- Always use **standard scaling** for numeric features
+- Prefer reproducible pipelines with explicit random seeds
 
-### Logging
-Always use this logging configuration:
-```python
-import logging
+## Modeling Expectations
+- Use XGBoost for multi-class classification
+- Use 5-fold stratified cross-validation
+- Evaluate using:
+  - Accuracy
+  - Precision (macro and per-class)
+  - Recall (macro and per-class)
+  - F1-score (macro and per-class)
+  - Confusion matrix (with heatmap)
+- Generate and save feature importance plots
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s,p%(process)s,{%(filename)s:%(lineno)d},%(levelname)s,%(message)s",
-)
-```
-
-### Constants
-- Do not hard-code constants inside functions
-- Declare constants at the top of the file with type annotations
-
-### After Writing Python Files
-- Always run `uv run ruff check --fix <filename>` after writing Python files
-- Always run `uv run python -m py_compile <filename>` to verify syntax
-
-### Output
-- Save plots to the `output/` directory
-- Use `logging.info()` for progress messages
-- Pretty-print dictionaries in log messages using `json.dumps(data, indent=2, default=str)`
+## Output Requirements
+- Save all artifacts under `output/`
+- Organize outputs into subfolders:
+  - `output/eda/`
+  - `output/data/`
+  - `output/model/`
+- Ensure outputs are reproducible and well-documented
