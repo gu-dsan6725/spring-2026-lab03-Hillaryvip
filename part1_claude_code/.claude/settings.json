@@ -1,28 +1,24 @@
 {
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/check_python.sh",
-            "timeout": 30,
-            "statusMessage": "Running ruff and py_compile..."
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/block_force_push.sh"
-          }
-        ]
-      }
-    ]
-  }
+  "hooks": [
+    {
+      "type": "post_tool_use",
+      "tools": ["Write", "Edit"],
+      "action": "command",
+      "command": "bash scripts/check_python.sh",
+      "description": "Runs ruff (lint + format) and python -m py_compile after every Python file write or edit to enforce code quality and catch syntax errors early."
+    },
+    {
+      "type": "post_tool_use",
+      "tools": ["Write", "Edit"],
+      "action": "prompt",
+      "prompt": "A new Python file was created or modified. Determine whether a corresponding pytest file should be added under the tests/ directory. If so, propose creating it."
+    },
+    {
+      "type": "pre_tool_use",
+      "tools": ["Bash"],
+      "action": "command",
+      "command": "bash scripts/block_force_push.sh",
+      "description": "Prevents dangerous git operations by blocking any attempt to run git push --force."
+    }
+  ]
 }

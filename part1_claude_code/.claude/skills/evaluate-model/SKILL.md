@@ -1,27 +1,33 @@
----
-name: evaluate-model
-description: Evaluate a trained ML model and generate a performance report. Use when asked to evaluate, assess, or report on model performance.
-argument-hint: [model path or description]
----
+# Skill: evaluate-classifier
 
-When evaluating a trained model, follow these steps:
+## Purpose
+Guide the AI assistant through a standardized evaluation workflow for a multi-class classification model trained on the UCI Wine dataset.
+This skill ensures consistent evaluation practices and can be reused across different classification projects.
 
-1. **Load the trained model** (check `output/` directory for joblib or pickle files)
-2. **Load test data** and generate predictions
-3. **Determine the task type** (regression or classification) and compute appropriate metrics:
-   - Regression: RMSE, MAE, R-squared, MAPE
-   - Classification: accuracy, precision, recall, F1-score, confusion matrix
-4. **Generate diagnostic plots**:
-   - Regression: predicted vs actual scatter, residuals vs predicted
-   - Classification: confusion matrix heatmap, ROC curve if applicable
-5. **Create a feature importance chart** if the model supports it (tree-based models, linear coefficients)
-6. **Write an evaluation report** to `output/evaluation_report.md` with:
-   - A metrics summary table
-   - Key findings and observations
-   - Recommendations for improvement
-7. **Save all plots** to the `output/` directory
+## Inputs
+- Trained classification model
+- Test dataset (features + labels)
+- Output directory path (default: `output/model/`)
 
-Use polars for data handling. Log all metrics using the project's logging format.
-Follow the coding standards in CLAUDE.md.
+## Step-by-Step Instructions
 
-If $ARGUMENTS specifies a model path or details, use that. Otherwise, look for models in the `output/` directory.
+1. Load the trained model and the held-out test dataset.
+2. Generate predictions and predicted class probabilities.
+3. Compute overall evaluation metrics:
+   - Accuracy
+   - Precision (macro and per-class)
+   - Recall (macro and per-class)
+   - F1-score (macro and per-class)
+4. Generate a confusion matrix and save both the raw matrix and a heatmap visualization.
+5. Compute and plot feature importance for the trained XGBoost classifier.
+6. Log all metrics using the project’s required logging format.
+7. Save evaluation metrics to a structured file.
+8. Summarize model strengths, weaknesses, and potential improvements.
+9. Save all artifacts to the specified output directory.
+
+## Outputs
+- accuracy, precision, recall, F1
+- Confusion matrix and heatmap
+- Feature importance plot
+- JSON or CSV
+- All outputs saved under `output/model/`

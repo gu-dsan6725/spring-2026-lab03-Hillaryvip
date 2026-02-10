@@ -1,38 +1,71 @@
----
-name: plan
-description: Create an implementation plan for review before building
-argument-hint: [description of what to plan]
-disable-model-invocation: true
----
+# Slash Command: /plan-wine
 
-Create a detailed implementation plan for: $ARGUMENTS
+## Purpose
+Generate a structured implementation plan for a complete machine learning pipeline
+to classify wines into three classes using the UCI Wine dataset.
 
-Derive a short kebab-case feature name from the task description (e.g., "add cross-validation" becomes "cross-validation", "build EDA pipeline" becomes "eda-pipeline").
-
-Write the plan to `.scratchpad/<feature-name>/plan.md` with the following structure:
-
-## Plan: [Title]
-
-### Objective
-Brief description of what will be built.
-
-### Steps
-Numbered list of implementation steps, each with:
-- What file(s) will be created or modified
-- What the code will do
-- Any dependencies on previous steps
-
-### Technical Decisions
-- Libraries and tools to use
-- Data structures and patterns
-- Any trade-offs considered
-
-### Testing Strategy
-How the implementation will be verified.
-
-### Expected Output
-What files and artifacts will be produced.
+This command prepares the project for implementation while enforcing all rules
+defined in `CLAUDE.md`.
 
 ---
 
-After writing the plan, tell the user to review it and provide feedback before proceeding with implementation. Do NOT start building until the user approves the plan.
+## Objectives
+- Build a reproducible ML pipeline for Wine classification
+- Perform exploratory data analysis (EDA)
+- Engineer features and prepare data for modeling
+- Train and evaluate a multi-class XGBoost classifier
+- Produce a comprehensive evaluation report
+
+---
+
+## Dataset
+- Source: `sklearn.datasets.load_wine()`
+- Samples: 178
+- Features: 13 numeric chemical measurements
+- Target: 3 wine classes
+- Task type: Multi-class classification
+
+---
+
+## Architecture
+The pipeline should be divided into the following scripts:
+
+1. `01_eda.py`
+   - Load and explore the dataset
+   - Generate summary statistics and plots
+   - Save EDA artifacts to `output/eda/`
+
+2. `02_feature_engineering.py`
+   - Create derived features 
+   - Standard-scale features
+   - Perform stratified train/test split
+   - Save processed datasets to `output/data/`
+
+3. `03_xgboost_model.py`
+   - Train an XGBoost multi-class classifier
+   - Use cross-validation
+   - Evaluate model performance
+   - Save model and metrics to `output/model/`
+
+---
+
+## Evaluation Metrics
+- Accuracy
+- Precision (macro and per-class)
+- Recall (macro and per-class)
+- F1-score (macro and per-class)
+- Confusion matrix (with heatmap)
+- Feature importance
+
+---
+
+## File Structure
+part1_claude_code/
+├── src/
+│ ├── 01_eda.py
+│ ├── 02_feature_engineering.py
+│ └── 03_xgboost_model.py
+output/
+├── eda/
+├── data/
+└── model/

@@ -1,7 +1,11 @@
-# California Housing ML Project
+# Wine Classification ML Project
 
 ## Project Overview
-This project performs exploratory data analysis and builds an XGBoost regression model on the California Housing dataset from scikit-learn. The goal is to predict median house values.
+This project performs exploratory data analysis and builds an XGBoost **classification** model on the UCI Wine dataset using `sklearn.datasets.load_wine()`.
+
+The goal is to classify wines into **three classes** based on 13 chemical features such as alcohol, malic acid, ash, flavanoids, phenols, and proline.
+
+This project is designed to demonstrate how Claude Code can be guided using project rules, hooks, skills, and slash commands to build a complete machine learning pipeline.
 
 ## Coding Standards
 
@@ -11,17 +15,21 @@ This project performs exploratory data analysis and builds an XGBoost regression
 - Use `polars` for data manipulation (not pandas)
 - Use `ruff` for linting and formatting
 - Use `pytest` for testing
+- Use `scikit-learn` for data loading, preprocessing, and evaluation
+- Use `xgboost` for model training
+- Use `matplotlib` (and seaborn if needed) for visualization
 
 ### Code Style
 - Use type annotations for all function parameters (one parameter per line)
-- All private functions must start with underscore (`_`) and be placed at the top of the file
-- Public functions follow after private functions
-- Functions should be no more than 30-50 lines
-- Two blank lines between function definitions
+- All private helper functions must start with an underscore (`_`) and appear at the top of the file
+- Public functions should be defined after private functions
+- Functions should generally be no longer than 30–50 lines
+- Use two blank lines between function definitions
 - Use multi-line imports
 
 ### Logging
-Always use this logging configuration:
+Always use the following logging configuration:
+
 ```python
 import logging
 
@@ -31,15 +39,28 @@ logging.basicConfig(
 )
 ```
 
+- Use `logging.info()` for pipeline progress
+- Use `logging.debug()` when a `--debug` flag is enabled
+
 ### Constants
 - Do not hard-code constants inside functions
 - Declare constants at the top of the file with type annotations
+- Examples include random seeds, test split ratios, and cross-validation folds
 
-### After Writing Python Files
-- Always run `uv run ruff check --fix <filename>` after writing Python files
-- Always run `uv run python -m py_compile <filename>` to verify syntax
+### Data and Modeling Rules
+- Treat the Wine dataset as a **multi-class classification problem**
+- Always use **stratified** train/test splits
+- Apply **standard scaling** before modeling
+- Use **5-fold stratified cross-validation**
+- Report the following metrics:
+  - Accuracy
+  - Precision, Recall, and F1-score (macro and per-class)
+  - Confusion matrix
+- Generate feature importance plots for the trained model
+
 
 ### Output
-- Save plots to the `output/` directory
-- Use `logging.info()` for progress messages
-- Pretty-print dictionaries in log messages using `json.dumps(data, indent=2, default=str)`
+- Save all plots, data artifacts, and reports under the `output/` directory
+- Organize outputs into logical subfolders (e.g., `output/eda/`, `output/data/`, `output/model/`)
+- Pretty-print dictionaries in logs using `json.dumps(data, indent=2, default=str)`
+- Ensure scripts are reproducible via CLI arguments such as `--seed` and `--output-dir`
